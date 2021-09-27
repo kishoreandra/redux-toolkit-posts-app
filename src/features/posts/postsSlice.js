@@ -10,10 +10,11 @@ export const postsSlice = createSlice({
   initialState,
   reducers: {
     postAdded(state, action) {
+      console.log(action.payload);
       state.push(action.payload)
     },
     postEdited(state, action) {
-      const { id, title, content } = action.payload
+      const { id, title, content} = action.payload
       const exisitingPost = state.find((post) => post.id === id)
       if (exisitingPost) {
         exisitingPost.title = title

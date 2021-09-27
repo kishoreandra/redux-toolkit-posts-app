@@ -4,27 +4,35 @@ import { postAdded } from './postsSlice'
 
 export const AddPostForm = () => {
   const id = useSelector((state) => String(state.posts.length + 1))
+  const users = useSelector((state) => state.users);
+
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [userId, setUserId] = useState('')
 
   const dispatch = useDispatch()
 
   const onTitleChanged = (e) => setTitle(e.target.value)
   const onContentChanged = (e) => setContent(e.target.value)
+  const onUserChanged = (e) => setUserId(e.target.value)
+
+  const onSave = Boolean(title) && Boolean(content) && Boolean(userId)
 
   const onSavePostClicked = () => {
-    if (title && content) {
+    if (title && content ) {
       dispatch(
         postAdded({
           //   id: nanoid(),
           id,
           title,
           content,
+          userId
         })
       )
 
       setTitle('')
       setContent('')
+      setUserId('')
     }
   }
 
@@ -40,6 +48,11 @@ export const AddPostForm = () => {
           value={title}
           onChange={onTitleChanged}
         />
+        <label htmlFor="postAuthor">Author:</label>
+        <select selected={"Select"}  onChange={onUserChanged}>
+          <option value={""}>Select</option>
+          {users.map(user=><option key={user.userId} value={user.userId}>{user.name}</option>)}
+        </select>
         <label htmlFor="postContent">Content:</label>
         <textarea
           id="postContent"
@@ -47,7 +60,7 @@ export const AddPostForm = () => {
           value={content}
           onChange={onContentChanged}
         />{' '}
-        <button type="button" onClick={onSavePostClicked}>
+        <button type="button" onClick={onSavePostClicked} disabled={!onSave}>
           Save Post
         </button>
       </form>
