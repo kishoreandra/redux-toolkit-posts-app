@@ -3,10 +3,11 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { PostAuthor } from './PostAuthor'
 import { TimeAgo } from './TimeAgo'
+import { selectAllPosts } from './postsSlice'
 import ReactionButtons from './ReactionButtons'
 
 const PostsList = () => {
-  const posts = useSelector((state) => state.posts)
+  const posts = useSelector(selectAllPosts)
   // Sort posts in reverse chronological order by datetime string
   const orderedPosts = posts
     .slice()
